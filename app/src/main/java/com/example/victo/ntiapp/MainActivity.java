@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         randomizeButton.setOnLongClickListener(
                 new Button.OnLongClickListener(){
                     public boolean onLongClick(View v){
-                        TextView snackText = (TextView)findViewById(R.id.snackText);
-                        String[] snacks;
+                        final TextView snackText = (TextView)findViewById(R.id.snackText);
+                        final String[] snacks;
                         snacks = new String[5];
                         snacks[0] = "Äpple";
                         snacks[1] = "Banan";
@@ -73,8 +73,31 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         snacks[3] = "Mars Bar";
                         snacks[4] = "Yoghurt";
 
-                        int randomNum = ThreadLocalRandom.current().nextInt(0, 5);
-                        snackText.setText(snacks[randomNum]);
+                        //MainActivity random = new MainActivity();
+                        //int delay = 200;
+
+                        //(new Handler()).postDelayed(new Runnable(){
+                        //    @Override
+                        //    public void run(){
+                        //        random.randomSnack(snacks);
+                        //    }
+                        //}, delay);
+
+                        //(new Handler()).postDelayed(this::randomSnack(snacks), 200);    <--- Hur det fungerade förut
+
+
+                        //Slutar aldrig att randomiza... v
+
+                        //final Handler handler = new Handler();
+                        //final int delay = 200; //milliseconds
+
+                        //handler.postDelayed(new Runnable(){
+                        //    public void run(){
+                        //        int randomNum = ThreadLocalRandom.current().nextInt(0, 5);
+                        //       snackText.setText(snacks[randomNum]);
+                        //        handler.postDelayed(this, delay);
+                        //    }
+                        //}, delay);
 
                         return false;
                     }
@@ -83,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+    }
+
+    public void randomSnack(String[] snacks) {
+        int randomNum = ThreadLocalRandom.current().nextInt(0, 5);
+        snackText.setText(snacks[randomNum]);
     }
 
     @Override
