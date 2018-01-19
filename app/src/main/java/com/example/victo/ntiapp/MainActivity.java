@@ -45,33 +45,46 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
-                        String[] snacks;
-                        snacks = new String[5];
-                        snacks[0] = "Äpple";
-                        snacks[1] = "Banan";
-                        snacks[2] = "Päron";
-                        snacks[3] = "Mars Bar";
-                        snacks[4] = "Yoghurt";
+                        String[] snacks = {"Äpple","Banan","Päron","Mars Bar","Yoghurt"};
+                        final TextView snackText = (TextView)findViewById(R.id.snackText);
+
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                for(int i=0;i<50;i++){
+                                    int randomNum = ThreadLocalRandom.current().nextInt(0,5);
+                                    snackText.setText(snacks[randomNum]);
+                                    String value = snacks[randomNum];
+                                    Log.i(TAG, value);
+                                    try {
+                                        Thread.sleep(50);
+                                    }catch (InterruptedException ie){
+                                        Log.i(TAG, "Thread interrupted");
+                                    }
+
+                                }
+                            }
+                        };
+                        Thread myThread = new Thread(r);
+                        myThread.start();
 
                         int randomNum = ThreadLocalRandom.current().nextInt(0,5);
-
-                        TextView snackText = (TextView)findViewById(R.id.snackText);
                         snackText.setText(snacks[randomNum]);
                     }
                 }
         );
 
-        randomizeButton.setOnLongClickListener(
-                new Button.OnLongClickListener(){
-                    public boolean onLongClick(View v){
-                        final TextView snackText = (TextView)findViewById(R.id.snackText);
-                        final String[] snacks;
-                        snacks = new String[5];
-                        snacks[0] = "Äpple";
-                        snacks[1] = "Banan";
-                        snacks[2] = "Päron";
-                        snacks[3] = "Mars Bar";
-                        snacks[4] = "Yoghurt";
+        //randomizeButton.setOnLongClickListener(
+        //        new Button.OnLongClickListener(){
+        //            public boolean onLongClick(View v){
+        //                final TextView snackText = (TextView)findViewById(R.id.snackText);
+        //                final String[] snacks;
+        //                snacks = new String[5];
+        //                snacks[0] = "Äpple";
+        //                snacks[1] = "Banan";
+        //                snacks[2] = "Päron";
+        //                snacks[3] = "Mars Bar";
+        //                snacks[4] = "Yoghurt";
 
                         //MainActivity random = new MainActivity();
                         //int delay = 200;
@@ -99,10 +112,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         //    }
                         //}, delay);
 
-                        return false;
-                    }
-                }
-        );
+        //return false;
+        //}
+        //}
+        //);
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
