@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.os.Message;
+import java.util.Random;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -45,17 +47,28 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
-                        String[] snacks = {"Äpple","Banan","Päron","Mars Bar","Yoghurt"};
+                        String[] snacks = {"Äpple","Banan","Päron","Mars Bar","Yoghurt","Kex Choklad","Toast","Sallad","Fryst måltid","frystmåltid + Sallad", "popcorn","Pringles","Klubbor","patroner","Risifrutti","pingvinstång","vicks halstabletter","Center rulle","kinder choklad","stor skittles","skittles","haribo påse","malacco påse","delicatobollar","bounty","twix","yankee bar","Japp KING-size","Marabou 100g choklad","Mackor" };
+                        String[] drinks = {"Coca Cola", "Coca Cola Cherry", "Coca Cola Vanilj", "Fanta", "Festis", "Mer", "Nocco", "Celcius", "Loka Flaska", "Loka Crush", "Loka burk", "Alovera", "Stor kaffe", "Varm Choklad", "Te", "Rosh?", "Snapple", "Pucko", "Pago juice", "Yoggi Yalla"};
                         final TextView snackText = (TextView)findViewById(R.id.snackText);
+                        final TextView drinkText = (TextView)findViewById(R.id.drinkText);
+                        Random rand = new Random();
+
+
+                        Handler handler = new Handler(){
+                          @Override
+                            public void handleMessage(Message msg){
+                              int randomNum = rand.nextInt(snacks.length);
+                              snackText.setText(snacks[randomNum]);
+                              int randomNum2 = rand.nextInt(drinks.length);
+                              drinkText.setText(drinks[randomNum2]);
+                          }
+                        };
 
                         Runnable r = new Runnable() {
                             @Override
                             public void run() {
                                 for(int i=0;i<50;i++){
-                                    int randomNum = ThreadLocalRandom.current().nextInt(0,5);
-                                    snackText.setText(snacks[randomNum]);
-                                    String value = snacks[randomNum];
-                                    Log.i(TAG, value);
+                                    handler.sendEmptyMessage(0);
                                     try {
                                         Thread.sleep(50);
                                     }catch (InterruptedException ie){
@@ -68,8 +81,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         Thread myThread = new Thread(r);
                         myThread.start();
 
-                        int randomNum = ThreadLocalRandom.current().nextInt(0,5);
+                        int randomNum = rand.nextInt(snacks.length);
                         snackText.setText(snacks[randomNum]);
+                        int randomNum2 = rand.nextInt(drinks.length);
+                        drinkText.setText(drinks[randomNum2]);
                     }
                 }
         );

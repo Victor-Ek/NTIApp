@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
 android:layout_width="match_parent" android:layout_height="match_parent"
 android:orientation="vertical" tools:context="com.example.victo.ntiapp.MainActivity">
 
-<FrameLayout
-    android:id="@+id/content"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1">
+    <Button
+        android:id="@+id/randomizeButton"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:text="Randomize"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp" />
 
     <TextView
         android:id="@+id/snackText"
@@ -25,14 +29,24 @@ android:orientation="vertical" tools:context="com.example.victo.ntiapp.MainActiv
         android:visibility="visible"
         tools:text="Header" />
 
-    <Button
-        android:id="@+id/randomizeButton"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Randomize" />
+        android:layout_below="@+id/snackText"
+        android:layout_centerHorizontal="true"
+        android:text="+"
+        android:textAlignment="center"
+        android:textSize="34sp" />
 
+    <TextView
+        android:id="@+id/drinkText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text=""
+        android:textSize="34sp" />
 
-</FrameLayout>
-
-</LinearLayout>
+</RelativeLayout>
