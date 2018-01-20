@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private TextView mTextMessage;
     private static final String TAG = "myMessage";
 
-
-
     private TextView snackText;
     private GestureDetectorCompat gestureDetector;
+
+    MyDBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         gestureDetector.setOnDoubleTapListener(this);
 
         Button randomizeButton = (Button)findViewById(R.id.randomizeButton);
+        dbHandler = new MyDBHandler(this, null, null, 1);
 
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
@@ -88,116 +89,51 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                     }
                 }
         );
-
-        //randomizeButton.setOnLongClickListener(
-        //        new Button.OnLongClickListener(){
-        //            public boolean onLongClick(View v){
-        //                final TextView snackText = (TextView)findViewById(R.id.snackText);
-        //                final String[] snacks;
-        //                snacks = new String[5];
-        //                snacks[0] = "Äpple";
-        //                snacks[1] = "Banan";
-        //                snacks[2] = "Päron";
-        //                snacks[3] = "Mars Bar";
-        //                snacks[4] = "Yoghurt";
-
-                        //MainActivity random = new MainActivity();
-                        //int delay = 200;
-
-                        //(new Handler()).postDelayed(new Runnable(){
-                        //    @Override
-                        //    public void run(){
-                        //        random.randomSnack(snacks);
-                        //    }
-                        //}, delay);
-
-                        //(new Handler()).postDelayed(this::randomSnack(snacks), 200);    <--- Hur det fungerade förut
-
-
-                        //Slutar aldrig att randomiza... v
-
-                        //final Handler handler = new Handler();
-                        //final int delay = 200; //milliseconds
-
-                        //handler.postDelayed(new Runnable(){
-                        //    public void run(){
-                        //        int randomNum = ThreadLocalRandom.current().nextInt(0, 5);
-                        //       snackText.setText(snacks[randomNum]);
-                        //        handler.postDelayed(this, delay);
-                        //    }
-                        //}, delay);
-
-        //return false;
-        //}
-        //}
-        //);
-        //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-    }
-
-    public void randomSnack(String[] snacks) {
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 5);
-        snackText.setText(snacks[randomNum]);
     }
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        snackText.setText("Ranomize");
         return false;
     }
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        snackText.setText("Ranomize");
         return false;
     }
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
-        snackText.setText("Ranomize");
-
         return false;
     }
 
     @Override
     public boolean onDown(MotionEvent e) {
-        snackText.setText("Ranomize");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
-        snackText.setText("Ranomize");
+
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        snackText.setText("Ranomize");
         return false;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        snackText.setText("Ranomize");
         return false;
     }
 
     @Override
     public void onLongPress(MotionEvent e) {
-        snackText.setText("Ranomize");
+
     }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        snackText.setText("Ranomize");
         return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        this.gestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 
     @Override
