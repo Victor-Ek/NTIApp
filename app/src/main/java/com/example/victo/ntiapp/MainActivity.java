@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.os.Message;
 import java.util.Random;
+import java.util.Arrays;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
-                        String[] snacks = {"Äpple","Banan","Päron","Mars Bar","Yoghurt","Kex Choklad","Toast","Sallad","Fryst måltid","frystmåltid + Sallad", "popcorn","Pringles","Klubbor","patroner","Risifrutti","pingvinstång","vicks halstabletter","Center rulle","kinder choklad","stor skittles","skittles","haribo påse","malacco påse","delicatobollar","bounty","twix","yankee bar","Japp KING-size","Marabou 100g choklad","Mackor" };
+                        Object[] list = dbHandler.databaseToString().toArray(new String[dbHandler.databaseToString().size()]);
+                        String[] snacks = Arrays.copyOf(list, list.length, String[].class);
                         String[] drinks = {"Coca Cola", "Coca Cola Cherry", "Coca Cola Vanilj", "Fanta", "Festis", "Mer", "Nocco", "Celcius", "Loka Flaska", "Loka Crush", "Loka burk", "Alovera", "Stor kaffe", "Varm Choklad", "Te", "Rosh?", "Snapple", "Pucko", "Pago juice", "Yoggi Yalla"};
                         final TextView snackText = (TextView)findViewById(R.id.snackText);
                         final TextView drinkText = (TextView)findViewById(R.id.drinkText);
