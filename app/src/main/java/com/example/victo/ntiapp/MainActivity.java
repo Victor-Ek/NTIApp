@@ -19,6 +19,7 @@ import android.view.View.OnTouchListener;
 import android.os.Message;
 import java.util.Random;
 import java.util.Arrays;
+import java.io.IOException;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -49,8 +50,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
+                        try {
+
+                            dbHandler.createDataBase();
+
+                        } catch (IOException ioe) {
+
+                            Log.i(TAG, "Unable to create database!");
+
+                        }
+                        Log.i(TAG, "im here");
                         Object[] list = dbHandler.databaseToString().toArray(new String[dbHandler.databaseToString().size()]);
+                        Log.i(TAG, "and now im here");
                         String[] snacks = Arrays.copyOf(list, list.length, String[].class);
+                        String str = Arrays.toString(snacks);
+                        Log.i(TAG, str);
+
                         String[] drinks = {"Coca Cola", "Coca Cola Cherry", "Coca Cola Vanilj", "Fanta", "Festis", "Mer", "Nocco", "Celcius", "Loka Flaska", "Loka Crush", "Loka burk", "Alovera", "Stor kaffe", "Varm Choklad", "Te", "Rosh?", "Snapple", "Pucko", "Pago juice", "Yoggi Yalla"};
                         final TextView snackText = (TextView)findViewById(R.id.snackText);
                         final TextView drinkText = (TextView)findViewById(R.id.drinkText);

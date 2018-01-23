@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.ContentValues;
 import java.io.IOException;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
+import java.util.Arrays;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
@@ -18,14 +20,15 @@ import java.util.List;
 public class MyDBHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "products.db";
+    private static final String DATABASE_NAME = "products.db"; //kan vara fel, lägg till .sqlite
     public static final String TABLE_SNACKS = "snacks";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAMN = "_namn";
     public static final String COLUMN_PRIS = "_pris";
     public static final String COLUMN_INFO = "_info";
     public static final String COLUMN_NYTTIGHET = "_nyttighet";
-    private static String DB_PATH = "/data/data/YOUR_PACKAGE/databases/";
+    private static final String TAG = "myMessage";
+    private static String DB_PATH = "/data/data/com.example.victo.ntiapp/databases/";
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
@@ -71,23 +74,32 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_SNACKS,COLUMN_NAMN + "IS" + product, null);
     }
 
-    //Print out db as string
+    //Print out db as ListArray
     public List databaseToString(){
         List<String> dbArray = new ArrayList<String>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_SNACKS + "WHERE 1";
 
         //Cursor point to location in your results
-        Cursor c =db.rawQuery(query,null);
+        Log.i(TAG, "I crash here 1 :(");
+        Cursor c = db.rawQuery(query,null);
         //move to the first row in your results
+        Log.i(TAG, "I crash here 2 :(");
         c.moveToFirst();
 
+        Log.i(TAG, "Where do i crash?");
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("_namn"))!= null){
+                Log.i(TAG, "Im in a loop mom");
                 dbArray.add(c.getString(c.getColumnIndex("_namn")));
             }
         }
+        Log.i(TAG, "im outside the loop mom");
+        String[] array = dbArray.toArray(new String[0]);
+        String str = Arrays.toString(array);
+        Log.i(TAG, str);
         db.close();
+        c.close();
         return dbArray;
     }
 
@@ -101,8 +113,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         if(dbExist){
             //do nothing - database already exist
+            Log.i(TAG, "Database already exist");
         }else{
-
+            Log.i(TAG, "Database does not exist");
             //By calling this method and empty database will be created into the default system path
             //of your application so we are gonna be able to overwrite that database with our database.
             this.getReadableDatabase();
@@ -113,6 +126,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
             } catch (IOException e) {
 
+                Log.i(TAG, "Error copying database");
                 throw new Error("Error copying database");
 
             }
@@ -131,9 +145,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         try{
             String myPath = DB_PATH + DATABASE_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
+            Log.i(TAG, checkDB.toString());
         }catch(SQLiteException e){
 
+            Log.i(TAG, "Database does not exist yet");
             //database does't exist yet.
 
         }
@@ -156,9 +171,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         //Open your local db as the input stream
         InputStream myInput = myContext.getAssets().open(DATABASE_NAME);
+        Log.i(TAG, myInput + "<- my input");
 
         // Path to the just created empty db
         String outFileName = DB_PATH + DATABASE_NAME;
+        Log.i(TAG, outFileName + "<- out file name");
 
         //Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFileName);
@@ -181,6 +198,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         //Open the database
         String myPath = DB_PATH + DATABASE_NAME;
+        Log.i(TAG, "Open database");
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
     }
