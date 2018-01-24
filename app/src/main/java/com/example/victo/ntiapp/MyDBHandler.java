@@ -16,12 +16,14 @@ import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "products.db"; //kan vara fel, lägg till .sqlite
     public static final String TABLE_SNACKS = "snacks";
+    public static final String TABLE_DRINKS = "drinks";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAMN = "_namn";
     public static final String COLUMN_PRIS = "_pris";
@@ -55,17 +57,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + TABLE_SNACKS);
-        onCreate(db);
-    }
-
-    //Add a new row to the database
-    public void addProduct(Snacks product){
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAMN, product.get_namn());
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_SNACKS, null, values);
-        db.close();
+        //db.execSQL("DROP TABLE IF EXISTS" + TABLE_SNACKS);
+        Log.i(TAG, "Beep Boop, Delete Database");
+        File file = new File(DB_PATH, DATABASE_NAME);
+        boolean delete = file.delete();
+        Log.i(TAG, "Beep Boop, Database Deleted");
+        try {
+            createDataBase();
+        }catch (IOException ie){
+            Log.i(TAG, "Beep Boop, Failed to Create, maybe you should give up");
+        }
     }
 
     //Delete from database
@@ -74,30 +75,49 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_SNACKS,COLUMN_NAMN + "IS" + product, null);
     }
 
-    //Print out db as ListArray
-    public List databaseToString(){
+    //Print snacks table
+    public List getSnacks(){
         List<String> dbArray = new ArrayList<String>();
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_SNACKS + "WHERE 1";
+        String query = "SELECT * FROM " + TABLE_SNACKS + " WHERE 1";
 
         //Cursor point to location in your results
-        Log.i(TAG, "I crash here 1 :(");
         Cursor c = db.rawQuery(query,null);
         //move to the first row in your results
-        Log.i(TAG, "I crash here 2 :(");
         c.moveToFirst();
 
-        Log.i(TAG, "Where do i crash?");
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("_namn"))!= null){
                 Log.i(TAG, "Im in a loop mom");
                 dbArray.add(c.getString(c.getColumnIndex("_namn")));
             }
+            c.moveToNext();
         }
         Log.i(TAG, "im outside the loop mom");
-        String[] array = dbArray.toArray(new String[0]);
-        String str = Arrays.toString(array);
-        Log.i(TAG, str);
+        db.close();
+        c.close();
+        return dbArray;
+    }
+
+    //Print drinks table
+    public List getDrinks(){
+        List<String> dbArray = new ArrayList<String>();
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_DRINKS + " WHERE 1";
+
+        //Cursor point to location in your results
+        Cursor c = db.rawQuery(query,null);
+        //move to the first row in your results
+        c.moveToFirst();
+
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex("_namn"))!= null){
+                Log.i(TAG, "Im in a loop mom");
+                dbArray.add(c.getString(c.getColumnIndex("_namn")));
+            }
+            c.moveToNext();
+        }
+        Log.i(TAG, "im outside the loop mom");
         db.close();
         c.close();
         return dbArray;
