@@ -49,4 +49,23 @@ android:orientation="vertical" tools:context="com.example.victo.ntiapp.MainActiv
         android:text=""
         android:textSize="34sp" />
 
+    <TextView
+        android:id="@+id/priceBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/drinkText"
+        android:layout_centerHorizontal="true"
+        android:text="Pris"
+        android:textSize="34sp" />
+
+    <Switch
+        android:id="@+id/mjölkSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="54dp"
+        android:layout_toLeftOf="@+id/randomizeButton"
+        android:layout_toStartOf="@+id/randomizeButton"
+        android:text="Mjölk" />
+
 </RelativeLayout>

@@ -20,6 +20,7 @@ import android.os.Message;
 import java.util.Random;
 import java.util.Arrays;
 import java.io.IOException;
+import android.widget.Switch;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -46,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         Button randomizeButton = (Button)findViewById(R.id.randomizeButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
+        Switch mjölkSwitch = (Switch)findViewById(R.id.mjölkSwitch);
+
+        Boolean switchState = mjölkSwitch.isChecked();
+
+        if (switchState){
+
+        }
 
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
@@ -66,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         String[] drinks = Arrays.copyOf(list2, list2.length, String[].class); //Convert array to string array
                         final TextView snackText = (TextView)findViewById(R.id.snackText);
                         final TextView drinkText = (TextView)findViewById(R.id.drinkText);
+                        final TextView priceText = (TextView)findViewById(R.id.priceBox);
                         Random rand = new Random();
 
 
@@ -73,9 +82,20 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                           @Override
                             public void handleMessage(Message msg){
                               int randomNum = rand.nextInt(snacks.length);
-                              snackText.setText(snacks[randomNum]);
+                              String theSnack = snacks[randomNum];
+                              snackText.setText(theSnack);
+
+                              int snackPrice = dbHandler.getPriceSnack(theSnack);
+
                               int randomNum2 = rand.nextInt(drinks.length);
-                              drinkText.setText(drinks[randomNum2]);
+                              String theDrink = drinks[randomNum2];
+                              drinkText.setText(theDrink);
+
+                              int drinkPrice = dbHandler.getPriceDrink(theDrink);
+
+                              int price = drinkPrice + snackPrice;
+                              String stringPrice = Integer.toString(price);
+                              priceText.setText(stringPrice + "kr");
                           }
                         };
 
@@ -96,10 +116,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         Thread myThread = new Thread(r);
                         myThread.start();
 
-                        int randomNum = rand.nextInt(snacks.length);
-                        snackText.setText(snacks[randomNum]);
-                        int randomNum2 = rand.nextInt(drinks.length);
-                        drinkText.setText(drinks[randomNum2]);
+
                     }
                 }
         );

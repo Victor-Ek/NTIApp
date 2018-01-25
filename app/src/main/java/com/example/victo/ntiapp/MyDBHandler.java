@@ -123,6 +123,44 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return dbArray;
     }
 
+    public int getPriceSnack(String snackName){
+        SQLiteDatabase db = getWritableDatabase();
+        Log.i(TAG, snackName + "<--Snack namn");
+        String query = "SELECT * FROM " + TABLE_SNACKS + " WHERE _namn IS " + "'" + snackName + "'";
+        Log.i(TAG, query);
+        int price = 0;
+        Cursor c = db.rawQuery(query,null);
+
+        c.moveToFirst();
+        price += (c.getInt(2));
+
+        db.close();
+        c.close();
+        return price;
+    }
+
+    public int getPriceDrink(String drinkName){
+        SQLiteDatabase db = getWritableDatabase();
+        Log.i(TAG, drinkName + "<--drink namn");
+
+        String query = "SELECT * FROM " + TABLE_DRINKS + " WHERE _namn IS " + "'" + drinkName + "'";
+        Log.i(TAG, query);
+
+        int price = 0;
+        Log.i(TAG, "Cursur problem");
+        Cursor c = db.rawQuery(query,null);
+        Log.i(TAG, "Not Cursur problem");
+
+
+        c.moveToFirst();
+        price += (c.getInt(2));
+        Log.i(TAG, "worked");
+
+        db.close();
+        c.close();
+        return price;
+    }
+
 
     /**
      * Creates a empty database on the system and rewrites it with your own database.
