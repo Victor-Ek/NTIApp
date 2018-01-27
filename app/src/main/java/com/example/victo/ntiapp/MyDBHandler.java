@@ -20,7 +20,7 @@ import java.io.File;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "products.db"; //kan vara fel, lägg till .sqlite
     public static final String TABLE_SNACKS = "snacks";
     public static final String TABLE_DRINKS = "drinks";
@@ -76,31 +76,42 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     //Print snacks table
-    public List getSnacks(){
+    public List getSnacks(boolean mjölk, boolean nut, boolean gluten){
+        String mjölkAllergi = "null)";
+        String nutkAllergi = "null)";
+        String glutenAllergi = "null)";
         List<String> dbArray = new ArrayList<String>();
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_SNACKS + " WHERE 1";
+        String whereQuery = "(SELECT SnackId FROM Snack_Allergier_Relation WHERE AllergiId IS ";
+        String andQurey = " AND _id NOT IN ";
+        if(mjölk){
+            mjölkAllergi = "2)";
+        }else if(nut){
+            nutkAllergi = "1)";
+        }else if(gluten){
+            glutenAllergi = "3)";
+        }
+        String query = "SELECT * FROM " + TABLE_SNACKS + " WHERE _id NOT IN " + whereQuery + mjölkAllergi + andQurey + whereQuery + nutkAllergi + andQurey + whereQuery + glutenAllergi;
 
         //Cursor point to location in your results
         Cursor c = db.rawQuery(query,null);
+        Log.i(TAG, "problem is not above");
         //move to the first row in your results
         c.moveToFirst();
 
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("_namn"))!= null){
-                Log.i(TAG, "Im in a loop mom");
                 dbArray.add(c.getString(c.getColumnIndex("_namn")));
             }
             c.moveToNext();
         }
-        Log.i(TAG, "im outside the loop mom");
         db.close();
         c.close();
         return dbArray;
     }
 
     //Print drinks table
-    public List getDrinks(){
+    public List getDrinks(boolean mjölk, boolean nut, boolean gluten){
         List<String> dbArray = new ArrayList<String>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_DRINKS + " WHERE 1";
@@ -112,12 +123,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("_namn"))!= null){
-                Log.i(TAG, "Im in a loop mom");
                 dbArray.add(c.getString(c.getColumnIndex("_namn")));
             }
             c.moveToNext();
         }
-        Log.i(TAG, "im outside the loop mom");
         db.close();
         c.close();
         return dbArray;
@@ -125,9 +134,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public int getPriceSnack(String snackName){
         SQLiteDatabase db = getWritableDatabase();
-        Log.i(TAG, snackName + "<--Snack namn");
         String query = "SELECT * FROM " + TABLE_SNACKS + " WHERE _namn IS " + "'" + snackName + "'";
-        Log.i(TAG, query);
         int price = 0;
         Cursor c = db.rawQuery(query,null);
 
@@ -141,25 +148,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public int getPriceDrink(String drinkName){
         SQLiteDatabase db = getWritableDatabase();
-        Log.i(TAG, drinkName + "<--drink namn");
 
         String query = "SELECT * FROM " + TABLE_DRINKS + " WHERE _namn IS " + "'" + drinkName + "'";
-        Log.i(TAG, query);
-
         int price = 0;
-        Log.i(TAG, "Cursur problem");
         Cursor c = db.rawQuery(query,null);
-        Log.i(TAG, "Not Cursur problem");
-
 
         c.moveToFirst();
         price += (c.getInt(2));
-        Log.i(TAG, "worked");
 
         db.close();
         c.close();
         return price;
     }
+
 
 
     /**

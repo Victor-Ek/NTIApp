@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     private TextView mTextMessage;
     private static final String TAG = "myMessage";
-
     private TextView snackText;
     private GestureDetectorCompat gestureDetector;
 
@@ -48,12 +47,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         Button randomizeButton = (Button)findViewById(R.id.randomizeButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
         Switch mjölkSwitch = (Switch)findViewById(R.id.mjölkSwitch);
-
-        Boolean switchState = mjölkSwitch.isChecked();
-
-        if (switchState){
-
-        }
+        Switch nutSwitch = (Switch)findViewById(R.id.nutSwitch);
+        Switch glutenSwitch = (Switch)findViewById(R.id.glutenSwitch);
 
         randomizeButton.setOnClickListener(
                 new Button.OnClickListener(){
@@ -67,11 +62,18 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                             Log.i(TAG, "Unable to create database!");
 
                         }
-                        Object[] list = dbHandler.getSnacks().toArray(new String[dbHandler.getSnacks().size()]);//Get Array of all items
-                        String[] snacks = Arrays.copyOf(list, list.length, String[].class); //Convert array to string array
 
-                        Object[] list2 = dbHandler.getDrinks().toArray(new String[dbHandler.getDrinks().size()]);//Get Array of all items
-                        String[] drinks = Arrays.copyOf(list2, list2.length, String[].class); //Convert array to string array
+                        Boolean switchStateMjölk = mjölkSwitch.isChecked();
+                        Boolean switchStateNut = nutSwitch.isChecked();
+                        Boolean switchStateGluten = glutenSwitch.isChecked();
+
+                        Object[] list = dbHandler.getSnacks(switchStateMjölk, switchStateNut, switchStateGluten).toArray(new String[dbHandler.getSnacks(switchStateMjölk, switchStateNut, switchStateGluten).size()]);
+                        String[] snacks = Arrays.copyOf(list, list.length, String[].class);
+
+                        Object[] list2 = dbHandler.getDrinks(switchStateMjölk, switchStateNut, switchStateGluten).toArray(new String[dbHandler.getDrinks(switchStateMjölk, switchStateNut, switchStateGluten).size()]);
+                        String[] drinks = Arrays.copyOf(list2, list2.length, String[].class);
+
+
                         final TextView snackText = (TextView)findViewById(R.id.snackText);
                         final TextView drinkText = (TextView)findViewById(R.id.drinkText);
                         final TextView priceText = (TextView)findViewById(R.id.priceBox);

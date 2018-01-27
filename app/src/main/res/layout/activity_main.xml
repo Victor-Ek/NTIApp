@@ -62,10 +62,29 @@ android:orientation="vertical" tools:context="com.example.victo.ntiapp.MainActiv
         android:id="@+id/mjölkSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/snackText"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="54dp"
-        android:layout_toLeftOf="@+id/randomizeButton"
-        android:layout_toStartOf="@+id/randomizeButton"
-        android:text="Mjölk" />
+        android:layout_alignStart="@+id/snackText"
+        android:layout_marginBottom="45dp"
+        android:text="Icke Mjölk" />
+
+    <Switch
+        android:id="@+id/nutSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mjölkSwitch"
+        android:layout_alignBottom="@+id/mjölkSwitch"
+        android:layout_centerHorizontal="true"
+        android:text="Icke Nötter" />
+
+    <Switch
+        android:id="@+id/glutenSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/nutSwitch"
+        android:layout_alignBottom="@+id/nutSwitch"
+        android:layout_alignEnd="@+id/snackText"
+        android:layout_alignRight="@+id/snackText"
+        android:text="Icke Gluten" />
 
 </RelativeLayout>
